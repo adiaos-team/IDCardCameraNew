@@ -35,8 +35,8 @@ import com.yalantis.ucrop.callback.BitmapCropCallback;
 import com.yalantis.ucrop.model.AspectRatio;
 import com.yalantis.ucrop.util.SelectedStateListDrawable;
 import com.yalantis.ucrop.view.CropImageView;
-import com.yalantis.ucrop.view.GestureCropImageView;
-import com.yalantis.ucrop.view.OverlayView;
+import com.yalantis.ucrop.view.GestureCropImageNewView;
+import com.yalantis.ucrop.view.OverlayNewView;
 import com.yalantis.ucrop.view.TransformImageView;
 import com.yalantis.ucrop.view.UCropView;
 import com.yalantis.ucrop.view.widget.AspectRatioTextView;
@@ -85,8 +85,8 @@ public class UCropFragment extends Fragment {
     private Transition mControlsTransition;
 
     private UCropView mUCropView;
-    private GestureCropImageView mGestureCropImageView;
-    private OverlayView mOverlayView;
+    private GestureCropImageNewView mGestureCropImageNewView;
+    private OverlayNewView mOverlayNewView;
     private ViewGroup mWrapperStateAspectRatio, mWrapperStateRotate, mWrapperStateScale;
     private ViewGroup mLayoutAspectRatio, mLayoutRotate, mLayoutScale;
     private List<ViewGroup> mCropAspectRatioViews = new ArrayList<>();
@@ -186,7 +186,7 @@ public class UCropFragment extends Fragment {
 
         if (inputUri != null && outputUri != null) {
             try {
-                mGestureCropImageView.setImageUri(inputUri, outputUri);
+                mGestureCropImageNewView.setImageUri(inputUri, outputUri);
             } catch (Exception e) {
                 callback.onCropFinish(getError(e));
             }
@@ -197,7 +197,7 @@ public class UCropFragment extends Fragment {
 
     /**
      * This method extracts {@link UCrop.Options #optionsBundle} from incoming bundle
-     * and setups fragment, {@link OverlayView} and {@link CropImageView} properly.
+     * and setups fragment, {@link OverlayNewView} and {@link CropImageView} properly.
      */
     @SuppressWarnings("deprecation")
     private void processOptions(@NonNull Bundle bundle) {
@@ -218,25 +218,25 @@ public class UCropFragment extends Fragment {
         }
 
         // Crop image view options
-        mGestureCropImageView.setMaxBitmapSize(bundle.getInt(UCrop.Options.EXTRA_MAX_BITMAP_SIZE, CropImageView.DEFAULT_MAX_BITMAP_SIZE));
-        mGestureCropImageView.setMaxScaleMultiplier(bundle.getFloat(UCrop.Options.EXTRA_MAX_SCALE_MULTIPLIER, CropImageView.DEFAULT_MAX_SCALE_MULTIPLIER));
-        mGestureCropImageView.setImageToWrapCropBoundsAnimDuration(bundle.getInt(UCrop.Options.EXTRA_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION, CropImageView.DEFAULT_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION));
+        mGestureCropImageNewView.setMaxBitmapSize(bundle.getInt(UCrop.Options.EXTRA_MAX_BITMAP_SIZE, CropImageView.DEFAULT_MAX_BITMAP_SIZE));
+        mGestureCropImageNewView.setMaxScaleMultiplier(bundle.getFloat(UCrop.Options.EXTRA_MAX_SCALE_MULTIPLIER, CropImageView.DEFAULT_MAX_SCALE_MULTIPLIER));
+        mGestureCropImageNewView.setImageToWrapCropBoundsAnimDuration(bundle.getInt(UCrop.Options.EXTRA_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION, CropImageView.DEFAULT_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION));
 
         // Overlay view options
-        mOverlayView.setFreestyleCropEnabled(bundle.getBoolean(UCrop.Options.EXTRA_FREE_STYLE_CROP, OverlayView.DEFAULT_FREESTYLE_CROP_MODE != OverlayView.FREESTYLE_CROP_MODE_DISABLE));
+        mOverlayNewView.setFreestyleCropEnabled(bundle.getBoolean(UCrop.Options.EXTRA_FREE_STYLE_CROP, OverlayNewView.DEFAULT_FREESTYLE_CROP_MODE != OverlayNewView.FREESTYLE_CROP_MODE_DISABLE));
 
-        mOverlayView.setDimmedColor(bundle.getInt(UCrop.Options.EXTRA_DIMMED_LAYER_COLOR, getResources().getColor(R.color.ucrop_color_default_dimmed)));
-        mOverlayView.setCircleDimmedLayer(bundle.getBoolean(UCrop.Options.EXTRA_CIRCLE_DIMMED_LAYER, OverlayView.DEFAULT_CIRCLE_DIMMED_LAYER));
+        mOverlayNewView.setDimmedColor(bundle.getInt(UCrop.Options.EXTRA_DIMMED_LAYER_COLOR, getResources().getColor(R.color.ucrop_color_default_dimmed)));
+        mOverlayNewView.setCircleDimmedLayer(bundle.getBoolean(UCrop.Options.EXTRA_CIRCLE_DIMMED_LAYER, OverlayNewView.DEFAULT_CIRCLE_DIMMED_LAYER));
 
-        mOverlayView.setShowCropFrame(bundle.getBoolean(UCrop.Options.EXTRA_SHOW_CROP_FRAME, OverlayView.DEFAULT_SHOW_CROP_FRAME));
-        mOverlayView.setCropFrameColor(bundle.getInt(UCrop.Options.EXTRA_CROP_FRAME_COLOR, getResources().getColor(R.color.ucrop_color_default_crop_frame)));
-        mOverlayView.setCropFrameStrokeWidth(bundle.getInt(UCrop.Options.EXTRA_CROP_FRAME_STROKE_WIDTH, getResources().getDimensionPixelSize(R.dimen.ucrop_default_crop_frame_stoke_width)));
+        mOverlayNewView.setShowCropFrame(bundle.getBoolean(UCrop.Options.EXTRA_SHOW_CROP_FRAME, OverlayNewView.DEFAULT_SHOW_CROP_FRAME));
+        mOverlayNewView.setCropFrameColor(bundle.getInt(UCrop.Options.EXTRA_CROP_FRAME_COLOR, getResources().getColor(R.color.ucrop_color_default_crop_frame)));
+        mOverlayNewView.setCropFrameStrokeWidth(bundle.getInt(UCrop.Options.EXTRA_CROP_FRAME_STROKE_WIDTH, getResources().getDimensionPixelSize(R.dimen.ucrop_default_crop_frame_stoke_width)));
 
-        mOverlayView.setShowCropGrid(bundle.getBoolean(UCrop.Options.EXTRA_SHOW_CROP_GRID, OverlayView.DEFAULT_SHOW_CROP_GRID));
-        mOverlayView.setCropGridRowCount(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_ROW_COUNT, OverlayView.DEFAULT_CROP_GRID_ROW_COUNT));
-        mOverlayView.setCropGridColumnCount(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_COLUMN_COUNT, OverlayView.DEFAULT_CROP_GRID_COLUMN_COUNT));
-        mOverlayView.setCropGridColor(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_COLOR, getResources().getColor(R.color.ucrop_color_default_crop_grid)));
-        mOverlayView.setCropGridStrokeWidth(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_STROKE_WIDTH, getResources().getDimensionPixelSize(R.dimen.ucrop_default_crop_grid_stoke_width)));
+        mOverlayNewView.setShowCropGrid(bundle.getBoolean(UCrop.Options.EXTRA_SHOW_CROP_GRID, OverlayNewView.DEFAULT_SHOW_CROP_GRID));
+        mOverlayNewView.setCropGridRowCount(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_ROW_COUNT, OverlayNewView.DEFAULT_CROP_GRID_ROW_COUNT));
+        mOverlayNewView.setCropGridColumnCount(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_COLUMN_COUNT, OverlayNewView.DEFAULT_CROP_GRID_COLUMN_COUNT));
+        mOverlayNewView.setCropGridColor(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_COLOR, getResources().getColor(R.color.ucrop_color_default_crop_grid)));
+        mOverlayNewView.setCropGridStrokeWidth(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_STROKE_WIDTH, getResources().getDimensionPixelSize(R.dimen.ucrop_default_crop_grid_stoke_width)));
 
         // Aspect ratio options
         float aspectRatioX = bundle.getFloat(UCrop.EXTRA_ASPECT_RATIO_X, 0);
@@ -249,12 +249,12 @@ public class UCropFragment extends Fragment {
             if (mWrapperStateAspectRatio != null) {
                 mWrapperStateAspectRatio.setVisibility(View.GONE);
             }
-            mGestureCropImageView.setTargetAspectRatio(aspectRatioX / aspectRatioY);
+            mGestureCropImageNewView.setTargetAspectRatio(aspectRatioX / aspectRatioY);
         } else if (aspectRatioList != null && aspectRationSelectedByDefault < aspectRatioList.size()) {
-            mGestureCropImageView.setTargetAspectRatio(aspectRatioList.get(aspectRationSelectedByDefault).getAspectRatioX() /
+            mGestureCropImageNewView.setTargetAspectRatio(aspectRatioList.get(aspectRationSelectedByDefault).getAspectRatioX() /
                     aspectRatioList.get(aspectRationSelectedByDefault).getAspectRatioY());
         } else {
-            mGestureCropImageView.setTargetAspectRatio(CropImageView.SOURCE_IMAGE_ASPECT_RATIO);
+            mGestureCropImageNewView.setTargetAspectRatio(CropImageView.SOURCE_IMAGE_ASPECT_RATIO);
         }
 
         // Result bitmap max size options
@@ -262,17 +262,17 @@ public class UCropFragment extends Fragment {
         int maxSizeY = bundle.getInt(UCrop.EXTRA_MAX_SIZE_Y, 0);
 
         if (maxSizeX > 0 && maxSizeY > 0) {
-            mGestureCropImageView.setMaxResultImageSizeX(maxSizeX);
-            mGestureCropImageView.setMaxResultImageSizeY(maxSizeY);
+            mGestureCropImageNewView.setMaxResultImageSizeX(maxSizeX);
+            mGestureCropImageNewView.setMaxResultImageSizeY(maxSizeY);
         }
     }
 
     private void initiateRootViews(View view) {
         mUCropView = view.findViewById(R.id.ucrop);
-        mGestureCropImageView = mUCropView.getCropImageView();
-        mOverlayView = mUCropView.getOverlayView();
+        mGestureCropImageNewView = mUCropView.getCropImageView();
+        mOverlayNewView = mUCropView.getOverlayView();
 
-        mGestureCropImageView.setTransformImageListener(mImageListener);
+        mGestureCropImageNewView.setTransformImageListener(mImageListener);
 
         ((ImageView) view.findViewById(R.id.image_view_logo)).setColorFilter(mLogoColor, PorterDuff.Mode.SRC_ATOP);
 
@@ -356,9 +356,9 @@ public class UCropFragment extends Fragment {
             cropAspectRatioView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mGestureCropImageView.setTargetAspectRatio(
+                    mGestureCropImageNewView.setTargetAspectRatio(
                             ((AspectRatioTextView) ((ViewGroup) v).getChildAt(0)).getAspectRatio(v.isSelected()));
-                    mGestureCropImageView.setImageToWrapCropBounds();
+                    mGestureCropImageNewView.setImageToWrapCropBounds();
                     if (!v.isSelected()) {
                         for (ViewGroup cropAspectRatioView : mCropAspectRatioViews) {
                             cropAspectRatioView.setSelected(cropAspectRatioView == v);
@@ -375,17 +375,17 @@ public class UCropFragment extends Fragment {
                 .setScrollingListener(new HorizontalProgressWheelView.ScrollingListener() {
                     @Override
                     public void onScroll(float delta, float totalDistance) {
-                        mGestureCropImageView.postRotate(delta / ROTATE_WIDGET_SENSITIVITY_COEFFICIENT);
+                        mGestureCropImageNewView.postRotate(delta / ROTATE_WIDGET_SENSITIVITY_COEFFICIENT);
                     }
 
                     @Override
                     public void onScrollEnd() {
-                        mGestureCropImageView.setImageToWrapCropBounds();
+                        mGestureCropImageNewView.setImageToWrapCropBounds();
                     }
 
                     @Override
                     public void onScrollStart() {
-                        mGestureCropImageView.cancelAllAnimations();
+                        mGestureCropImageNewView.cancelAllAnimations();
                     }
                 });
 
@@ -414,22 +414,22 @@ public class UCropFragment extends Fragment {
                     @Override
                     public void onScroll(float delta, float totalDistance) {
                         if (delta > 0) {
-                            mGestureCropImageView.zoomInImage(mGestureCropImageView.getCurrentScale()
-                                    + delta * ((mGestureCropImageView.getMaxScale() - mGestureCropImageView.getMinScale()) / SCALE_WIDGET_SENSITIVITY_COEFFICIENT));
+                            mGestureCropImageNewView.zoomInImage(mGestureCropImageNewView.getCurrentScale()
+                                    + delta * ((mGestureCropImageNewView.getMaxScale() - mGestureCropImageNewView.getMinScale()) / SCALE_WIDGET_SENSITIVITY_COEFFICIENT));
                         } else {
-                            mGestureCropImageView.zoomOutImage(mGestureCropImageView.getCurrentScale()
-                                    + delta * ((mGestureCropImageView.getMaxScale() - mGestureCropImageView.getMinScale()) / SCALE_WIDGET_SENSITIVITY_COEFFICIENT));
+                            mGestureCropImageNewView.zoomOutImage(mGestureCropImageNewView.getCurrentScale()
+                                    + delta * ((mGestureCropImageNewView.getMaxScale() - mGestureCropImageNewView.getMinScale()) / SCALE_WIDGET_SENSITIVITY_COEFFICIENT));
                         }
                     }
 
                     @Override
                     public void onScrollEnd() {
-                        mGestureCropImageView.setImageToWrapCropBounds();
+                        mGestureCropImageNewView.setImageToWrapCropBounds();
                     }
 
                     @Override
                     public void onScrollStart() {
-                        mGestureCropImageView.cancelAllAnimations();
+                        mGestureCropImageNewView.cancelAllAnimations();
                     }
                 });
         ((HorizontalProgressWheelView) view.findViewById(R.id.scale_scroll_wheel)).setMiddleLineColor(mActiveControlsWidgetColor);
@@ -462,13 +462,13 @@ public class UCropFragment extends Fragment {
     }
 
     private void resetRotation() {
-        mGestureCropImageView.postRotate(-mGestureCropImageView.getCurrentAngle());
-        mGestureCropImageView.setImageToWrapCropBounds();
+        mGestureCropImageNewView.postRotate(-mGestureCropImageNewView.getCurrentAngle());
+        mGestureCropImageNewView.setImageToWrapCropBounds();
     }
 
     private void rotateByAngle(int angle) {
-        mGestureCropImageView.postRotate(angle);
-        mGestureCropImageView.setImageToWrapCropBounds();
+        mGestureCropImageNewView.postRotate(angle);
+        mGestureCropImageNewView.setImageToWrapCropBounds();
     }
 
     private final View.OnClickListener mStateClickListener = new View.OnClickListener() {
@@ -525,8 +525,8 @@ public class UCropFragment extends Fragment {
     }
 
     private void setAllowedGestures(int tab) {
-        mGestureCropImageView.setScaleEnabled(mAllowedGestures[tab] == ALL || mAllowedGestures[tab] == SCALE);
-        mGestureCropImageView.setRotateEnabled(mAllowedGestures[tab] == ALL || mAllowedGestures[tab] == ROTATE);
+        mGestureCropImageNewView.setScaleEnabled(mAllowedGestures[tab] == ALL || mAllowedGestures[tab] == SCALE);
+        mGestureCropImageNewView.setRotateEnabled(mAllowedGestures[tab] == ALL || mAllowedGestures[tab] == ROTATE);
     }
 
     /**
@@ -549,11 +549,11 @@ public class UCropFragment extends Fragment {
         mBlockingView.setClickable(true);
         callback.loadingProgress(true);
 
-        mGestureCropImageView.cropAndSaveImage(mCompressFormat, mCompressQuality, new BitmapCropCallback() {
+        mGestureCropImageNewView.cropAndSaveImage(mCompressFormat, mCompressQuality, new BitmapCropCallback() {
 
             @Override
             public void onBitmapCropped(@NonNull Uri resultUri, int offsetX, int offsetY, int imageWidth, int imageHeight) {
-                callback.onCropFinish(getResult(resultUri, mGestureCropImageView.getTargetAspectRatio(), offsetX, offsetY, imageWidth, imageHeight));
+                callback.onCropFinish(getResult(resultUri, mGestureCropImageNewView.getTargetAspectRatio(), offsetX, offsetY, imageWidth, imageHeight));
                 callback.loadingProgress(false);
             }
 

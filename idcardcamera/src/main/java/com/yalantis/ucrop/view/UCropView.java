@@ -15,8 +15,8 @@ import com.yalantis.ucrop.callback.OverlayViewChangeListener;
 
 public class UCropView extends FrameLayout {
 
-    private GestureCropImageView mGestureCropImageView;
-    private final OverlayView mViewOverlay;
+    private GestureCropImageNewView mGestureCropImageNewView;
+    private final OverlayNewView mViewOverlay;
 
     public UCropView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -26,12 +26,12 @@ public class UCropView extends FrameLayout {
         super(context, attrs, defStyleAttr);
 
         LayoutInflater.from(context).inflate(R.layout.ucrop_view, this, true);
-        mGestureCropImageView = findViewById(R.id.image_view_crop);
+        mGestureCropImageNewView = findViewById(R.id.image_view_crop);
         mViewOverlay = findViewById(R.id.view_overlay);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ucrop_UCropView);
         mViewOverlay.processStyledAttributes(a);
-        mGestureCropImageView.processStyledAttributes(a);
+        mGestureCropImageNewView.processStyledAttributes(a);
         a.recycle();
 
 
@@ -39,7 +39,7 @@ public class UCropView extends FrameLayout {
     }
 
     private void setListenersToViews() {
-        mGestureCropImageView.setCropBoundsChangeListener(new CropBoundsChangeListener() {
+        mGestureCropImageNewView.setCropBoundsChangeListener(new CropBoundsChangeListener() {
             @Override
             public void onCropAspectRatioChanged(float cropRatio) {
                 mViewOverlay.setTargetAspectRatio(cropRatio);
@@ -48,7 +48,7 @@ public class UCropView extends FrameLayout {
         mViewOverlay.setOverlayViewChangeListener(new OverlayViewChangeListener() {
             @Override
             public void onCropRectUpdated(RectF cropRect) {
-                mGestureCropImageView.setCropRect(cropRect);
+                mGestureCropImageNewView.setCropRect(cropRect);
             }
         });
     }
@@ -59,12 +59,12 @@ public class UCropView extends FrameLayout {
     }
 
     @NonNull
-    public GestureCropImageView getCropImageView() {
-        return mGestureCropImageView;
+    public GestureCropImageNewView getCropImageView() {
+        return mGestureCropImageNewView;
     }
 
     @NonNull
-    public OverlayView getOverlayView() {
+    public OverlayNewView getOverlayView() {
         return mViewOverlay;
     }
 
@@ -73,10 +73,10 @@ public class UCropView extends FrameLayout {
      * Be careful: this method recreate UCropImageView instance and reattach it to layout.
      */
     public void resetCropImageView() {
-        removeView(mGestureCropImageView);
-        mGestureCropImageView = new GestureCropImageView(getContext());
+        removeView(mGestureCropImageNewView);
+        mGestureCropImageNewView = new GestureCropImageNewView(getContext());
         setListenersToViews();
-        mGestureCropImageView.setCropRect(getOverlayView().getCropViewRect());
-        addView(mGestureCropImageView, 0);
+        mGestureCropImageNewView.setCropRect(getOverlayView().getCropViewRect());
+        addView(mGestureCropImageNewView, 0);
     }
 }

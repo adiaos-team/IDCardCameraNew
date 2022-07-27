@@ -18,8 +18,8 @@ import com.pengbo.idcardcamera.R;
 import com.yalantis.ucrop.callback.BitmapCropCallback;
 import com.yalantis.ucrop.model.AspectRatio;
 import com.yalantis.ucrop.view.CropImageView;
-import com.yalantis.ucrop.view.GestureCropImageView;
-import com.yalantis.ucrop.view.OverlayView;
+import com.yalantis.ucrop.view.GestureCropImageNewView;
+import com.yalantis.ucrop.view.OverlayNewView;
 import com.yalantis.ucrop.view.TransformImageView;
 import com.yalantis.ucrop.view.UCropView;
 
@@ -51,8 +51,8 @@ public class UCropActivity extends AppCompatActivity {
 
     private static final String TAG = "UCropActivity";
     private UCropView mUCropView;
-    private GestureCropImageView mGestureCropImageView;
-    private OverlayView mOverlayView;
+    private GestureCropImageNewView mGestureCropImageNewView;
+    private OverlayNewView mOverlayNewView;
     private View mBlockingView;
 
 
@@ -80,8 +80,8 @@ public class UCropActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (mGestureCropImageView != null) {
-            mGestureCropImageView.cancelAllAnimations();
+        if (mGestureCropImageNewView != null) {
+            mGestureCropImageNewView.cancelAllAnimations();
         }
     }
 
@@ -92,7 +92,7 @@ public class UCropActivity extends AppCompatActivity {
 
         if (inputUri != null && outputUri != null) {
             try {
-                mGestureCropImageView.setImageUri(inputUri, outputUri);
+                mGestureCropImageNewView.setImageUri(inputUri, outputUri);
             } catch (Exception e) {
                 setResultError(e);
                 finish();
@@ -114,14 +114,14 @@ public class UCropActivity extends AppCompatActivity {
         mCompressQuality = intent.getIntExtra(UCrop.Options.EXTRA_COMPRESSION_QUALITY, UCropActivity.DEFAULT_COMPRESS_QUALITY);
 
         //裁剪设置
-        mGestureCropImageView.setMaxBitmapSize(intent.getIntExtra(UCrop.Options.EXTRA_MAX_BITMAP_SIZE, CropImageView.DEFAULT_MAX_BITMAP_SIZE));
-        mGestureCropImageView.setMaxScaleMultiplier(intent.getFloatExtra(UCrop.Options.EXTRA_MAX_SCALE_MULTIPLIER, CropImageView.DEFAULT_MAX_SCALE_MULTIPLIER));
-        mGestureCropImageView.setImageToWrapCropBoundsAnimDuration(intent.getIntExtra(UCrop.Options.EXTRA_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION, CropImageView.DEFAULT_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION));
+        mGestureCropImageNewView.setMaxBitmapSize(intent.getIntExtra(UCrop.Options.EXTRA_MAX_BITMAP_SIZE, CropImageView.DEFAULT_MAX_BITMAP_SIZE));
+        mGestureCropImageNewView.setMaxScaleMultiplier(intent.getFloatExtra(UCrop.Options.EXTRA_MAX_SCALE_MULTIPLIER, CropImageView.DEFAULT_MAX_SCALE_MULTIPLIER));
+        mGestureCropImageNewView.setImageToWrapCropBoundsAnimDuration(intent.getIntExtra(UCrop.Options.EXTRA_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION, CropImageView.DEFAULT_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION));
 
-        mOverlayView.setFreestyleCropEnabled(false);
-        mOverlayView.setCircleDimmedLayer(false);
-        mOverlayView.setShowCropFrame(false);
-        mOverlayView.setShowCropGrid(false);
+        mOverlayNewView.setFreestyleCropEnabled(false);
+        mOverlayNewView.setCircleDimmedLayer(false);
+        mOverlayNewView.setShowCropFrame(false);
+        mOverlayNewView.setShowCropGrid(false);
 
         //缩放大小
         float aspectRatioX = intent.getFloatExtra(UCrop.EXTRA_ASPECT_RATIO_X, 0);
@@ -132,12 +132,12 @@ public class UCropActivity extends AppCompatActivity {
         ArrayList<AspectRatio> aspectRatioList = intent.getParcelableArrayListExtra(UCrop.Options.EXTRA_ASPECT_RATIO_OPTIONS);
 
         if (aspectRatioX > 0 && aspectRatioY > 0) {
-            mGestureCropImageView.setTargetAspectRatio(aspectRatioX / aspectRatioY);
+            mGestureCropImageNewView.setTargetAspectRatio(aspectRatioX / aspectRatioY);
         } else if (aspectRatioList != null && aspectRationSelectedByDefault < aspectRatioList.size()) {
-            mGestureCropImageView.setTargetAspectRatio(aspectRatioList.get(aspectRationSelectedByDefault).getAspectRatioX() /
+            mGestureCropImageNewView.setTargetAspectRatio(aspectRatioList.get(aspectRationSelectedByDefault).getAspectRatioX() /
                     aspectRatioList.get(aspectRationSelectedByDefault).getAspectRatioY());
         } else {
-            mGestureCropImageView.setTargetAspectRatio(CropImageView.SOURCE_IMAGE_ASPECT_RATIO);
+            mGestureCropImageNewView.setTargetAspectRatio(CropImageView.SOURCE_IMAGE_ASPECT_RATIO);
         }
 
         // Result bitmap max size options
@@ -145,18 +145,18 @@ public class UCropActivity extends AppCompatActivity {
         int maxSizeY = intent.getIntExtra(UCrop.EXTRA_MAX_SIZE_Y, 0);
 
         if (maxSizeX > 0 && maxSizeY > 0) {
-            mGestureCropImageView.setMaxResultImageSizeX(maxSizeX);
-            mGestureCropImageView.setMaxResultImageSizeY(maxSizeY);
+            mGestureCropImageNewView.setMaxResultImageSizeX(maxSizeX);
+            mGestureCropImageNewView.setMaxResultImageSizeY(maxSizeY);
         }
     }
 
 
     private void initiateViews(Intent intent) {
         mUCropView = findViewById(R.id.ucrop);
-        mOverlayView = mUCropView.getOverlayView();
+        mOverlayNewView = mUCropView.getOverlayView();
 
-        mGestureCropImageView = mUCropView.getCropImageView();
-        mGestureCropImageView.setTransformImageListener(mImageListener);
+        mGestureCropImageNewView = mUCropView.getCropImageView();
+        mGestureCropImageNewView.setTransformImageListener(mImageListener);
 
         //返回按钮
         findViewById(R.id.iv_camera_close).setOnClickListener(new View.OnClickListener() {
@@ -186,11 +186,11 @@ public class UCropActivity extends AppCompatActivity {
 
         //根据不同类型设置裁剪提示
         if (cardType==1){
-            mOverlayView.setBackgroundRes(R.drawable.camera_idcard_front);
+            mOverlayNewView.setBackgroundRes(R.drawable.camera_idcard_front);
         }else if (cardType==2){
-            mOverlayView.setBackgroundRes(R.drawable.camera_idcard_back);
+            mOverlayNewView.setBackgroundRes(R.drawable.camera_idcard_back);
         }else if (cardType==3){
-            mOverlayView.setBackgroundRes(R.drawable.camera_bank);
+            mOverlayNewView.setBackgroundRes(R.drawable.camera_bank);
         }
 
 
@@ -224,19 +224,19 @@ public class UCropActivity extends AppCompatActivity {
 
 
     private void resetRotation() {
-        mGestureCropImageView.postRotate(-mGestureCropImageView.getCurrentAngle());
+        mGestureCropImageNewView.postRotate(-mGestureCropImageNewView.getCurrentAngle());
 //        mGestureCropImageView.setImageToWrapCropBounds();
     }
 
     private void rotateByAngle(int angle) {
-        mGestureCropImageView.postRotate(angle);
+        mGestureCropImageNewView.postRotate(angle);
 //        mGestureCropImageView.setImageToWrapCropBounds();
     }
 
 
     private void setInitialState() {
-        mGestureCropImageView.setScaleEnabled(true);
-        mGestureCropImageView.setRotateEnabled(true);
+        mGestureCropImageNewView.setScaleEnabled(true);
+        mGestureCropImageNewView.setRotateEnabled(true);
     }
 
     private void addBlockingView() {
@@ -255,11 +255,11 @@ public class UCropActivity extends AppCompatActivity {
         mBlockingView.setClickable(true);
         supportInvalidateOptionsMenu();
 
-        mGestureCropImageView.cropAndSaveImage(mCompressFormat, mCompressQuality, new BitmapCropCallback() {
+        mGestureCropImageNewView.cropAndSaveImage(mCompressFormat, mCompressQuality, new BitmapCropCallback() {
 
             @Override
             public void onBitmapCropped(@NonNull Uri resultUri, int offsetX, int offsetY, int imageWidth, int imageHeight) {
-                setResultUri(resultUri, mGestureCropImageView.getTargetAspectRatio(), offsetX, offsetY, imageWidth, imageHeight);
+                setResultUri(resultUri, mGestureCropImageNewView.getTargetAspectRatio(), offsetX, offsetY, imageWidth, imageHeight);
                 finish();
             }
 
