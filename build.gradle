@@ -4,14 +4,13 @@ ext {
 
 buildscript {
     repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://repository.apache.org/content/repositories/snapshots/' }
-        maven { url 'https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-shade-plugin/' }
-        mavenCentral()
         google()
-        jcenter()
+        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
+        maven { url 'https://www.jitpack.io' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
@@ -22,14 +21,13 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://repository.apache.org/content/repositories/snapshots/' }
-        maven { url 'https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-shade-plugin/' }
-        mavenCentral()
         google()
-        jcenter()
+        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
+        maven { url 'https://www.jitpack.io' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
     }
 }
 
